@@ -4,10 +4,16 @@ on:
   workflow_dispatch:
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        node-version: [10, 12, 14]
+         os:
+          - ubuntu-latest
+          - windows-latest
+        node-version:
+          - 10
+          - 12 
+          - 14
     steps:
       - uses: actions/checkout@master
       - name: Use Node.js ${{ matrix.node-version }}
@@ -20,5 +26,5 @@ jobs:
         run: npm run-script test:ci
       - uses: actions/upload-artifact@v2
         with:
-          name: coverage-report
-          path: /coverage
+          name: coverage-report-${{ matrix.os }}-node-${{ matrix.node-version }}
+          path: coverage
