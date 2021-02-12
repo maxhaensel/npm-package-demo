@@ -9,9 +9,9 @@ jobs:
     name: Print event
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v2
         with:
-          ref: ${{ toJson(github.sha) }}
+          ref: ${{ github.sha }}
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2
         with:
