@@ -18,14 +18,14 @@ jobs:
           version=$(node -e "console.log(require('./package.json').version)")
           echo "VERSION=$(echo $version)" >> $GITHUB_ENV
         #   echo "$GITHUB_CONTEXT"
-
-      - name: update file and push to remote
-        run: yarn version --patch
       - name: update file and push to remote
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
+      - name: update file and push to remote
+        run: yarn version --patch
+      - name: update file and push to remote
+        run: |
           git add -A
           git commit -m "Update version ${{ env.VERSION }}"
           git push
