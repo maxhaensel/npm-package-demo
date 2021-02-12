@@ -27,8 +27,8 @@ jobs:
       - name: login
         run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NODE_AUTH_TOKEN }}" > ~/.npmrc
 
-      - name: publish
-        run: yarn publish --new-version ${{ env.VERSION }}
+      # - name: publish
+      #   run: yarn publish --new-version ${{ env.VERSION }}
 
       - name: setup user
         run: |
@@ -36,9 +36,9 @@ jobs:
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
       - name: patch version
         run: |
-          yarn config set version-git-message "version %s"
+          yarn config set version-git-message "Github Action: automatic Version bump to %s"
           yarn version --patch
       - name: github
         run: |
           git add -A
-          git push
+          git push origin HEAD:main
