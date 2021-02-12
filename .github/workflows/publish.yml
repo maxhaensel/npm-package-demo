@@ -23,12 +23,14 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
       - name: patch version
-        run: yarn version --patch
+        run: |
+          yarn config set version-commit-hooks false
+          yarn version --patch
       - name: gut add
         run: git add -A
       - name: status
         run: git status
-      # - name: commit
-      #   run: git commit -m "Update version ${{ env.VERSION }}"
+      - name: commit
+        run: git commit -m "Update version ${{ env.VERSION }}"
       - name: push
         run: git push
