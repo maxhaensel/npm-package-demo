@@ -12,12 +12,21 @@ jobs:
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2
       - name: get version from package
-        # env:
-        #   GITHUB_CONTEXT: ${{ toJson(github) }}
         run: |
           version=$(node -e "console.log(require('./package.json').version)")
           echo "VERSION=$(echo $version)" >> $GITHUB_ENV
-        #   echo "$GITHUB_CONTEXT"
+
+      - name: Install Dependencies
+        run: yarn install
+
+      - name: Install Dependencies
+        run: yarn build
+
+      - name: Install Dependencies
+        run: yarn publish
+        env:
+          NODE_AUTH_TOKEN: 73fadf78-79e3-4e06-89c4-78f9817d38d4
+
       - name: setup user
         run: |
           git config --global user.name "github-actions[bot]"
@@ -30,9 +39,3 @@ jobs:
         run: |
           git add -A
           git push
-      # - name: status
-      #   run: git status
-      # - name: commit
-      #   run: git commit -m "Update version ${{ env.VERSION }}"
-      # - name: push
-      #   run: git push
