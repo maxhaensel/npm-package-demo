@@ -11,6 +11,8 @@ jobs:
       - uses: actions/checkout@master
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2
+        with:
+          always-auth: true
       - name: get version from package
         run: |
           version=$(node -e "console.log(require('./package.json').version)")
@@ -19,11 +21,11 @@ jobs:
       - name: Install Dependencies
         run: yarn install
 
-      - name: Install Dependencies
+      - name: build
         run: yarn build
 
-      - name: Install Dependencies
-        run: yarn publish
+      - name: publish
+        run: yarn publish --new-version ${{ env.VERSION }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
 
