@@ -26,9 +26,9 @@ jobs:
         run: yarn version --patch
       - name: gut add
         run: git add -A
-      - name: commit
-        run: git commit -m "Update version ${{ env.VERSION }}"
       - name: status
         run: git status
-      - name: push
-        run: git push
+      # - name: commit
+      #   run: git commit -m "Update version ${{ env.VERSION }}"
+      # - name: push
+      #   run: git push
