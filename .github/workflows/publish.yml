@@ -19,6 +19,12 @@ jobs:
           GITHUB_CONTEXT: ${{ toJson(github) }}
         run: |
           echo "$GITHUB_CONTEXT"
+      - name: Dump GitHub context
+        env:
+          TAG_VERSION: ${{ toJson(github).event.release.tag_name }}
+        run: |
+          echo "$TAG_VERSION" | sed 's/v//'
+
       # - name: get version from package
       #   run: |
       #     version=$(node -e "console.log(require('./package.json').version)")
