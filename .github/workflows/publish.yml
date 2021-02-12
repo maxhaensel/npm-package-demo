@@ -24,7 +24,7 @@ jobs:
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
       - name: patch version
         run: |
-          yarn config set version-tag-prefix "version "
+          yarn config set version-git-message "version %s"
           yarn version --patch
       - name: github
         run: |
