@@ -28,4 +28,5 @@ jobs:
         run: |
           git add -A
           git commit -m "Update version ${{ env.VERSION }}"
+          git status
           git push
