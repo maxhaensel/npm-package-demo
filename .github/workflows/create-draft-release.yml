@@ -24,3 +24,16 @@ jobs:
           release_name: Release ${{ env.VERSION }}
           draft: true
           prerelease: false
+
+      - name: setup git user
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      - name: patch version
+        run: |
+          yarn config set version-git-message "Github Action: automatic Version bump to %s"
+          yarn version --patch
+      - name: github
+        run: |
+          git add -A
+          git push origin HEAD:main
