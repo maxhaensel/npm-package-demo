@@ -15,7 +15,7 @@ export default {
     {
       file: pkg.browser,
       format: 'iife',
-      name: 'MyPackage' // the global which can be used in a browser
+      name: 'npmpackagedemorwbhwr'
     }
   ],
   external: [...Object.keys(pkg.dependencies || {})],
