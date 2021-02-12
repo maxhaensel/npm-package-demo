@@ -1,4 +1,4 @@
-name: unit-test
+name: create-draft-release
 on:
   workflow_dispatch:
 jobs:
