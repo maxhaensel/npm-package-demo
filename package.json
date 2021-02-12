@@ -1,6 +1,6 @@
 {
   "name": "npm-package-demo-rwbhwr",
-  "version": "1.4.1",
+  "version": "1.4.3",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "browser": "dist/index.bundle.js",
