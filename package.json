@@ -5,6 +5,9 @@
   "module": "dist/index.es.js",
   "browser": "dist/index.bundle.min.js",
   "license": "MIT",
+  "files": [
+    "dist/*.{js,ts}"
+  ],
   "scripts": {
     "build": "rollup -c",
     "test": "jest --detectOpenHandles --coverage --watchAll",
