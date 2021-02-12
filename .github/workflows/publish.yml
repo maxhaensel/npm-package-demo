@@ -10,6 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
+        with:
+          ref: ${{ toJson(github.sha) }}
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2
         with:
@@ -23,34 +25,35 @@ jobs:
         env:
           TAG_VERSION: ${{ toJson(github.event.release.tag_name) }}
         run: |
-          echo "$TAG_VERSION" | sed 's/v//'
+          version=$(echo "$TAG_VERSION" | sed 's/v//')
+          echo "VERSION=$(echo $version)" >> $GITHUB_ENV
 
-      # - name: get version from package
-      #   run: |
-      #     version=$(node -e "console.log(require('./package.json').version)")
-      #     echo "VERSION=$(echo $version)" >> $GITHUB_ENV
+      - name: get version from package
+        run: |
+          version=$(node -e "console.log(require('./package.json').version)")
+          echo "VERSION=$(echo $version)" >> $GITHUB_ENV
 
-      # - name: Install Dependencies
-      #   run: yarn install
+      - name: Install Dependencies
+        run: yarn install
 
-      # - name: build
-      #   run: yarn build
+      - name: build
+        run: yarn build
 
-      # - name: login
-      #   run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NODE_AUTH_TOKEN }}" > ~/.npmrc
+      - name: login
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NODE_AUTH_TOKEN }}" > ~/.npmrc
 
-      # - name: publish
-      #   run: yarn publish --new-version ${{ env.VERSION }}
+      - name: publish
+        run: yarn publish --new-version ${{ env.VERSION }}
 
-      # - name: setup user
-      #   run: |
-      #     git config --global user.name "github-actions[bot]"
-      #     git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-      # - name: patch version
-      #   run: |
-      #     yarn config set version-git-message "Github Action: automatic Version bump to %s"
-      #     yarn version --patch
-      # - name: github
-      #   run: |
-      #     git add -A
-      #     git push origin HEAD:main
+      - name: setup user
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      - name: patch version
+        run: |
+          yarn config set version-git-message "Github Action: automatic Version bump to %s"
+          yarn version --patch
+      - name: github
+        run: |
+          git add -A
+          git push origin HEAD:main
