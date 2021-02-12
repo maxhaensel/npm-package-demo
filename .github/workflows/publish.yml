@@ -1,4 +1,4 @@
-name: publish
+name: Build and Publish Release
 on:
   release:
     types: [published]
@@ -6,59 +6,34 @@ on:
 
 jobs:
   version:
-    name: Print event
+    name: Build and Publish Release
     runs-on: ubuntu-latest
     steps:
-      - name: Dump GitHub context
-        run: echo ${{ github.sha }}
+      # - name: Dump GitHub context
+      #   run: echo ${{ github.sha }}
       - uses: actions/checkout@v2
         with:
           ref: ${{ github.sha }}
-      - name: Branchname
-        run: git branch --show-current
 
-      # - name: Use Node.js ${{ matrix.node-version }}
-      #   uses: actions/setup-node@v2
-      #   with:
-      #     always-auth: true
-      # - name: Dump GitHub context
-      #   env:
-      #     GITHUB_CONTEXT: ${{ toJson(github) }}
-      #   run: |
-      #     echo "$GITHUB_CONTEXT"
-      # - name: Dump GitHub context
-      #   env:
-      #     TAG_VERSION: ${{ toJson(github.event.release.tag_name) }}
-      #   run: |
-      #     version=$(echo "$TAG_VERSION" | sed 's/v//')
-      #     echo "VERSION=$(echo $version)" >> $GITHUB_ENV
+      - name: Use Node.js
+        uses: actions/setup-node@v2
+        with:
+          always-auth: true
+      - name: Set Tag-Version
+        env:
+          TAG_VERSION: ${{ toJson(github.event.release.tag_name) }}
+        run: |
+          version=$(echo "$TAG_VERSION" | sed 's/v//')
+          echo "VERSION=$(echo $version)" >> $GITHUB_ENV
 
-      # - name: get version from package
-      #   run: |
-      #     version=$(node -e "console.log(require('./package.json').version)")
-      #     echo "VERSION=$(echo $version)" >> $GITHUB_ENV
+      - name: Install Dependencies
+        run: yarn install
 
-      # - name: Install Dependencies
-      #   run: yarn install
+      - name: build
+        run: yarn build
 
-      # - name: build
-      #   run: yarn build
+      - name: login
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NODE_AUTH_TOKEN }}" > ~/.npmrc
 
-      # - name: login
-      #   run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NODE_AUTH_TOKEN }}" > ~/.npmrc
-
-      # - name: publish
-      #   run: yarn publish --new-version ${{ env.VERSION }}
-
-      # - name: setup user
-      #   run: |
-      #     git config --global user.name "github-actions[bot]"
-      #     git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-      # - name: patch version
-      #   run: |
-      #     yarn config set version-git-message "Github Action: automatic Version bump to %s"
-      #     yarn version --patch
-      # - name: github
-      #   run: |
-      #     git add -A
-      #     git push origin HEAD:main
+      - name: publish
+        run: yarn publish --new-version ${{ env.VERSION }}
