@@ -11,20 +11,20 @@ jobs:
       - uses: actions/checkout@master
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2
-      - name: Dump GitHub context
+      - name: get version from package
         # env:
         #   GITHUB_CONTEXT: ${{ toJson(github) }}
         run: |
           version=$(node -e "console.log(require('./package.json').version)")
           echo "VERSION=$(echo $version)" >> $GITHUB_ENV
         #   echo "$GITHUB_CONTEXT"
-      - name: update file and push to remote
+      - name: setup user
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-      - name: update file and push to remote
+      - name: patch version
         run: yarn version --patch
-      - name: update file and push to remote
+      - name: push new package.json
         run: |
           git add -A
           git commit -m "Update version ${{ env.VERSION }}"
